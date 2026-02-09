@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "todo-chatbot.fullname" . }}-audit-service
+  labels:
+    {{- include "todo-chatbot.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.auditService.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "todo-chatbot.selectorLabels" . | nindent 6 }}
+      app: audit-service
+  template:
+    metadata:
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "audit-service"
+        dapr.io/app-port: "50055"
+        dapr.io/app-protocol: "grpc"
+        {{- with .Values.auditService.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "todo-chatbot.selectorLabels" . | nindent 8 }}
+        app: audit-service
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-audit-service
+          image: "{{ .Values.auditService.image.repository }}:{{ .Values.auditService.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.auditService.image.pullPolicy }}
+          command: ["python"]
+          args: ["audit_service/main.py"]
+          ports:
+            - name: grpc
+              containerPort: 50055
+              protocol: TCP
+          env:
+            - name: DAPR_GRPC_PORT
+              value: "50055"
+            - name: DAPR_HTTP_PORT
+              value: "3500"
+            - name: PUBSUB_NAME
+              value: "pubsub-kafka"
+            - name: TASK_CREATED_TOPIC
+              value: "task-created"
+            - name: TASK_UPDATED_TOPIC
+              value: "task-updated"
+            - name: TASK_COMPLETED_TOPIC
+              value: "task-completed"
+            - name: TASK_DELETED_TOPIC
+              value: "task-deleted"
+            - name: TASK_RECURRENCE_TOPIC
+              value: "task-recurrence"
+            - name: TASK_REMINDERS_TOPIC
+              value: "task-reminders"
+            - name: STATE_STORE_NAME
+              value: "state-postgres"
+          envFrom:
+            - secretRef:
+                name: todo-audit-service-env
+          livenessProbe:
+            tcpSocket:
+              port: grpc
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: grpc
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.auditService.resources | nindent 12 }}

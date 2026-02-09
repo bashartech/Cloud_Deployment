@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "todo-chatbot.fullname" . }}-recurrence-engine
+  labels:
+    {{- include "todo-chatbot.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.recurrenceEngine.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "todo-chatbot.selectorLabels" . | nindent 6 }}
+      app: recurrence-engine
+  template:
+    metadata:
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "recurrence-engine"
+        dapr.io/app-port: "50054"
+        dapr.io/app-protocol: "grpc"
+        {{- with .Values.recurrenceEngine.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "todo-chatbot.selectorLabels" . | nindent 8 }}
+        app: recurrence-engine
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-recurrence-engine
+          image: "{{ .Values.recurrenceEngine.image.repository }}:{{ .Values.recurrenceEngine.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.recurrenceEngine.image.pullPolicy }}
+          command: ["python"]
+          args: ["recurrence_engine/main.py"]
+          ports:
+            - name: grpc
+              containerPort: 50054
+              protocol: TCP
+          env:
+            - name: DAPR_GRPC_PORT
+              value: "50054"
+            - name: DAPR_HTTP_PORT
+              value: "3500"
+            - name: PUBSUB_NAME
+              value: "pubsub-kafka"
+            - name: TASK_COMPLETED_TOPIC
+              value: "task-completed"
+            - name: TASK_RECURRENCE_TOPIC
+              value: "task-recurrence"
+            - name: BACKEND_APP_ID
+              value: "todo-backend"
+            - name: STATE_STORE_NAME
+              value: "state-postgres"
+          envFrom:
+            - secretRef:
+                name: todo-recurrence-engine-env
+          livenessProbe:
+            tcpSocket:
+              port: grpc
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: grpc
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.recurrenceEngine.resources | nindent 12 }}

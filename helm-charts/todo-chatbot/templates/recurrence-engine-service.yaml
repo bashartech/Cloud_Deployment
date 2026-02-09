@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "todo-chatbot.fullname" . }}-recurrence-engine
+  labels:
+    {{- include "todo-chatbot.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.recurrenceEngine.service.type }}
+  ports:
+    - port: {{ .Values.recurrenceEngine.service.port }}
+      targetPort: grpc
+      protocol: TCP
+      name: grpc
+  selector:
+    {{- include "todo-chatbot.selectorLabels" . | nindent 4 }}
+    app: recurrence-engine
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "todo-chatbot.fullname" . }}-recurrence-engine-dapr
+  labels:
+    {{- include "todo-chatbot.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 3500
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "todo-chatbot.selectorLabels" . | nindent 4 }}
+    app: recurrence-engine

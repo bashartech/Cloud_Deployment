@@ -1,0 +1,36 @@
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc g++ curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js 20 (for MCP Server)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
+# Set workdir
+WORKDIR /app
+
+# Install Python dependencies
+COPY ./backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy backend source code
+COPY ./backend .
+
+# Setup MCP Server (stdio integration)
+WORKDIR /app/mcp-server
+COPY ./mcp-server/package*.json ./
+RUN npm ci
+
+COPY ./mcp-server .
+RUN npm install -g typescript
+RUN npx tsc
+
+WORKDIR /app
+
+# Ensure the application listens on all interfaces
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

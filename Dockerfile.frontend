@@ -1,0 +1,48 @@
+# ---------- Build Stage ----------
+FROM node:20-bookworm AS builder
+
+WORKDIR /app
+
+# Install additional dependencies for native modules compilation
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    build-essential \
+    curl \
+    file \
+    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add Rust to PATH
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Copy package files
+COPY frontend/package*.json ./
+
+# Install dependencies with legacy peer deps
+RUN npm_config_build_from_source=true npm ci --legacy-peer-deps
+
+# Copy source code
+COPY frontend/ .
+
+# Build the Next.js application for production
+ENV NODE_ENV=production
+RUN npm run build
+
+# ---------- Runtime Stage ----------
+FROM node:20-bookworm AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+# Copy the standalone server files
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]

@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "todo-chatbot.fullname" . }}-notification-service
+  labels:
+    {{- include "todo-chatbot.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.notificationService.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "todo-chatbot.selectorLabels" . | nindent 6 }}
+      app: notification-service
+  template:
+    metadata:
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "notification-service"
+        dapr.io/app-port: "50051"
+        dapr.io/app-protocol: "grpc"
+        {{- with .Values.notificationService.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "todo-chatbot.selectorLabels" . | nindent 8 }}
+        app: notification-service
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-notification-service
+          image: "{{ .Values.notificationService.image.repository }}:{{ .Values.notificationService.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.notificationService.image.pullPolicy }}
+          command: ["python"]
+          args: ["notification_service/main.py"]
+          ports:
+            - name: grpc
+              containerPort: 50051
+              protocol: TCP
+          env:
+            - name: DAPR_GRPC_PORT
+              value: "50051"
+            - name: DAPR_HTTP_PORT
+              value: "3500"
+            - name: PUBSUB_NAME
+              value: "pubsub-kafka"
+            - name: TASK_REMINDERS_TOPIC
+              value: "task-reminders"
+            - name: STATE_STORE_NAME
+              value: "state-postgres"
+          envFrom:
+            - secretRef:
+                name: todo-notification-service-env
+          livenessProbe:
+            tcpSocket:
+              port: grpc
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: grpc
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.notificationService.resources | nindent 12 }}

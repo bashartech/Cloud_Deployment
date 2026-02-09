@@ -1,0 +1,614 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.DS_Store
+Thumbs.db
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# IDE
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+VolumeIcon.icns
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Coverage
+coverage/
+coverage/lcov-report
+
+# Next.js
+.next/
+out/
+
+# Docker
+.dockerignore
+*.dockerignore
+
+# Kubernetes
+.kube/
+.kubectl/
+.kustomize/
+*.kubeconfig
+
+# Helm
+.helm/
+.helmignore
+*.lock
+charts/
+tmp/
+
+# Minikube
+.minikube/
+*.minikube
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+*.env.*
+
+# Secrets and sensitive files
+todo-backend-env
+todo-frontend-env
+*.key
+*.pem
+*.crt
+*.cert
+*.secret
+secrets/
+*.secret.yaml
+*.secrets.yaml
+create-secrets.sh
+create-secrets.ps1
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+.#*
+*.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+*.lnk
+
+# Next.js specific
+.next/
+out/
+.nft.json
+!.next/static
+!.next/static/**
+
+# Backend specific
+*.db
+*.sqlite
+*.sqlite3
+instance/
+.webassets-cache
+scraped_emails.txt
+error.md
+error.txt
+
+# Frontend specific
+public/build/
+dist/
+build/
+
+# Deployment artifacts
+*.yaml
+*.yml
+!helm-charts/**/*
+!k8s-manifests/**/*
+
+# Local development
+*.local
+*.dev
+*.development
+
+# Credentials
+credentials.json
+*.credentials.json
+*.json.credentials
+*.creds
+*.tokens
+*.token
+
+# Configuration files that might contain sensitive data
+config.json
+*.config.json
+settings.json
+*.settings.json
+*.conf
+*.config
+
+# Artifacts from tools
+*.tmp
+*.temp
+.nyc_output/
+*.min.js
+*.min.css
+
+# System files
+*.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+*.lnk
+
+# Python specific
+*.pyc
+__pycache__/
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+*.cover
+*.log
+.git/
+
+# Node.js specific
+node_modules/
+jspm_packages/
+*.js.map
+*.mjs.map
+*.cjs.map
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+node_modules/
+jspm_packages/
+web-build/
+dist/
+build/
+.nyc_output/
+coverage/
+.nyc_output/
+*.cover
+*.log
+*.tmp
+*.temp
+.git/
+
+# Large files and binary data
+# Images
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.svg
+*.ico
+
+# Audio/Video
+*.mp3
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.wav
+*.aac
+*.ogg
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+*.bz2
+*.xz
+*.iso
+*.dmg
+
+# Documents
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.odt
+*.ods
+*.odp
+
+# Data files
+*.csv
+*.json
+*.xml
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.accdb
+dapr_windows_amd64.zip
+helm.exe
+helm.zip
+minikube-linux-amd64
+# Large compiled files
+*.exe
+*.dll
+*.so
+*.dylib
+*.jar
+*.war
+*.ear
+*.apk
+*.app
+*.deb
+*.rpm
+
+# Log files (can become very large)
+*.log
+logs/
+log/
+
+# Cache directories (may contain large files)
+.cache/
+.cargo/
+.target/
+.npm/
+.yarn/
+.pip/
+
+# Large datasets
+*.hdf5
+*.mat
+*.sav
+*.sas7bdat
+*.dta
+
+# Backup files
+*~
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+*.temp
+
+# Sensitive files patterns
+*.private.key
+*.private.pem
+*.private.crt
+*.private.cert
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.p12
+*.pfx
+*.p10
+*.csr
+*.keychain
+*.keystore
+*.jks
+
+# Additional secrets patterns
+*.password
+*.passwd
+*.htpasswd
+*.shadow
+*.master.key
+config/master.key
+config/credentials.yml.enc
+*.gpg
+*.asc
+*.pgp
+*.asc
+
+# Cloud credentials
+*.aws
+*.azure
+*.gcp
+*.ovh
+*.digitalocean
+*.scaleway
+
+# API keys and tokens
+*.apikey
+*.apitoken
+*.oauth
+*.session
+*.cookie
+*.jwt
+
+# Configuration files with potential secrets
+config/secrets.*
+config/keys.*
+config/credentials.*
+config/oauth.*
+config/apikeys.*
+
+# CI/CD secrets
+.github/secrets.*
+.gitlab/secrets.*
+.circleci/secrets.*
+.travis/secrets.*
+
+# SSH config and known hosts
+.ssh/config
+.ssh/known_hosts
+.ssh/authorized_keys
+.ssh/authorized_keys2
+.ssh/known_hosts.old
+
+# Git credential helpers
+.git-credentials
+.git/config.user
+.git/config.local
+
+# Editor swap files
+*.swp
+*.swo
+4913
+
+# Large temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Large build artifacts
+dist/
+build/
+target/
+out/
+_output/
+release/
+debug/
+bin/
+obj/
+
+# Database dumps
+*.dump
+*.backup
+*.sql.gz
+*.sql.bz2
+
+# Large media files
+*.mov
+*.mp4
+*.mkv
+*.webm
+*.flv
+*.m4v
+*.3gp
+*.3g2
+*.mxf
+*.avi
+*.wmv
+*.vob
+*.asf
+*.m2ts
+*.mts
+*.ts
+*.m2v
+*.m1v
+*.divx
+*.xvid
+*.ogv
+*.ogm
+*.rm
+*.rmvb
+*.qt
+*.dv
+*.fli
+*.flc
+*.mod
+*.mng
+*.asx
+*.wm
+*.wmx
+*.la
+*.snd
+*.au
+*.aif
+*.aiff
+*.m3u
+*.m4a
+*.flac
+*.opus
+*.spx
+*.tta
+*.wv
+*.wvc
+*.ape
+*.mac
+*.shn
+*.tak
+*.dsf
+*.dff
+*.mid
+*.midi
+*.rmi
+*.kar
+*.mpc
+*.mpp
+*.mp+
+*.wma
+*.wv
+*.wvc
+*.aac
+*.adt
+*.adts
+*.m4r
+*.3ga
+*.aa
+*.aax
+*.act
+*.aiff
+*.amr
+*.ape
+*.au
+*.awb
+*.dct
+*.dss
+*.dvf
+*.flac
+*.gsm
+*.iklax
+*.ivs
+*.m4a
+*.m4b
+*.m4p
+*.mmf
+*.mp3
+*.mpc
+*.msv
+*.oga
+*.ogg
+*.opus
+*.ra
+*.raw
+*.sln
+*.tta
+*.vox
+*.wav
+*.wma
+*.wv

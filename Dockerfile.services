@@ -1,0 +1,47 @@
+# Multi-stage Dockerfile for Todo Chatbot Services
+# Uses the same base image but different entrypoints for different services
+
+FROM python:3.11-slim as base
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set workdir
+WORKDIR /app
+
+# Install Python dependencies
+COPY ./backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Dapr SDK
+RUN pip install dapr dapr-ext-grpc
+
+# Copy backend source code
+COPY ./backend .
+
+# Backend service (default)
+FROM base as backend
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# Notification service
+FROM base as notification-service
+EXPOSE 50051
+CMD ["python", "notification_service/main.py"]
+
+# Recurrence engine service
+FROM base as recurrence-engine
+EXPOSE 50054
+CMD ["python", "recurrence_engine/main.py"]
+
+# Audit service
+FROM base as audit-service
+EXPOSE 50055
+CMD ["python", "audit_service/main.py"]
+
+# WebSocket service
+FROM base as websocket-service
+EXPOSE 8765
+CMD ["python", "websocket_service/main.py"]

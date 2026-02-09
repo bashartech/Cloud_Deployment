@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "todo-chatbot.fullname" . }}-websocket-service
+  labels:
+    {{- include "todo-chatbot.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.websocketService.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "todo-chatbot.selectorLabels" . | nindent 6 }}
+      app: websocket-service
+  template:
+    metadata:
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "websocket-service"
+        dapr.io/app-port: "50056"
+        dapr.io/app-protocol: "grpc"
+        {{- with .Values.websocketService.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "todo-chatbot.selectorLabels" . | nindent 8 }}
+        app: websocket-service
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-websocket-service
+          image: "{{ .Values.websocketService.image.repository }}:{{ .Values.websocketService.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.websocketService.image.pullPolicy }}
+          command: ["python"]
+          args: ["websocket_service/main.py"]
+          ports:
+            - name: grpc
+              containerPort: 50056
+              protocol: TCP
+            - name: websocket
+              containerPort: 8765
+              protocol: TCP
+          env:
+            - name: DAPR_GRPC_PORT
+              value: "50056"
+            - name: DAPR_HTTP_PORT
+              value: "3500"
+            - name: PUBSUB_NAME
+              value: "pubsub-kafka"
+            - name: TASK_UPDATES_TOPIC
+              value: "task-updates"
+            - name: WEBSOCKET_HOST
+              value: "0.0.0.0"
+            - name: WEBSOCKET_PORT
+              value: "8765"
+          envFrom:
+            - secretRef:
+                name: todo-websocket-service-env
+          livenessProbe:
+            tcpSocket:
+              port: grpc
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: grpc
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.websocketService.resources | nindent 12 }}
