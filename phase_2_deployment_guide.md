@@ -49,12 +49,12 @@ kubectl get secret todo-backend-env
 
 # If the secrets don't exist, create them with your application configuration:
 kubectl create secret generic todo-backend-env \
-  --from-literal=DATABASE_URL="postgresql://neondb_owner:npg_7JypvMXuA3GF@ep-empty-paper-a4mrk3om-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" \
+  --from-literal=DATABASE_URL="postg****equire&channel_binding=require" \
   --from-literal=BETTER_AUTH_URL="http://localhost:3000" \
   --from-literal=BETTER_AUTH_SECRET="e8QDSIu8QZtOENR8tRcsdwYMmwC4Uom0" \
-  --from-literal=GEMINI_API_KEY="AIzaSyAf373Hab-fdyEYrmoZWE6VAEirF8QxdyM" \
-  --from-literal=GOOGLE_CLIENT_ID="1097804706136-gidaslcn061l7nqa5bu2bt3ioob22odb.apps.googleusercontent.com" \
-  --from-literal=GOOGLE_CLIENT_SECRET="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" \
+  --from-literal=GEMINI_API_KEY="AIz*****8QxdyM" \
+  --from-literal=GOOGLE_CLIENT_ID="109****b.apps.googleusercontent.com" \
+  --from-literal=GOOGLE_CLIENT_SECRET="GO****NJ" \
   -n todo-chatbot
 ```
 
@@ -64,14 +64,14 @@ kubectl get secret todo-frontend-env
 
 # If the secrets don't exist, create them with your application configuration:
 kubectl create secret generic todo-frontend-env \
-  --from-literal=DATABASE_URL="postgresql://neondb_owner:npg_7JypvMXuA3GF@ep-empty-paper-a4mrk3om-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" \
-  --from-literal=NEXT_PUBLIC_DATABASE_URL="postgresql://neondb_owner:npg_7JypvMXuA3GF@ep-empty-paper-a4mrk3om-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" \
+  --from-literal=DATABASE_URL="pos***g=require" \
+  --from-literal=NEXT_PUBLIC_DATABASE_URL="postgresql://neondb_****mode=require&channel_binding=require" \
   --from-literal=NEXT_PUBLIC_BETTER_AUTH_URL="http://localhost:3000" \
   --from-literal=NEXT_PUBLIC_BACKEND_URL="http://localhost:8000/api" \
-  --from-literal=NEXT_PUBLIC_BETTER_AUTH_SECRET="e8QDSIu8QZtOENR8tRcsdwYMmwC4Uom0" \
-  --from-literal=GEMINI_API_KEY="AIzaSyAf373Hab-fdyEYrmoZWE6VAEirF8QxdyM" \
-  --from-literal=GOOGLE_CLIENT_ID="1097804706136-gidaslcn061l7nqa5bu2bt3ioob22odb.apps.googleusercontent.com" \
-  --from-literal=GOOGLE_CLIENT_SECRET="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" \
+  --from-literal=NEXT_PUBLIC_BETTER_AUTH_SECRET="e8***om0" \
+  --from-literal=GEMINI_API_KEY="AI***dyM" \
+  --from-literal=GOOGLE_CLIENT_ID="10978***.apps.googleusercontent.com" \
+  --from-literal=GOOGLE_CLIENT_SECRET="GO***NJ" \
   -n todo-chatbot
 ```
 
